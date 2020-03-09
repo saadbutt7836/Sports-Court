@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Garrison Gamers</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="Phone_no">Phone Number</string>
+    <string name="already_account">Already Registered? Sign In</string>
+    <string name="create_acc">Create an account</string>
+    <string name="forgot_pass">forgot password?</string>
+    <string name="suggest_box">maximum 200 characters</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="profile">Profile</string>
+    <string name="my_posts">My Posts</string>
+    <string name="change_pass">Change Password</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="comment">Comments</string>
+
+</resources>

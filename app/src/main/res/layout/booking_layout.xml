@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="0dp">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--            CRICKET-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/Cricket_Img"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:src="@raw/beauty2" />
+
+                    <TextView
+                        android:id="@+id/Cricket_Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toEndOf="@+id/Cricket_Img"
+                        android:text="Cricket Information"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/Cricket_View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="3dp"
+                        android:backgroundTint="@color/colorLightGreen"
+                        android:text="View"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <!--            FOOTBALL-->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/Football_Img"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:src="@raw/beauty2" />
+
+                    <TextView
+                        android:id="@+id/Football_Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toEndOf="@+id/Football_Img"
+                        android:text="Football Information"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/Football_View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="3dp"
+                        android:backgroundTint="@color/colorLightGreen"
+                        android:text="View"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <!--            BADMINTON-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/Badminton_Img"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:src="@raw/beauty2" />
+
+                    <TextView
+                        android:id="@+id/Badminton_Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toEndOf="@+id/Badminton_Img"
+                        android:text="Badminton Information"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/Badminton_View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="3dp"
+                        android:backgroundTint="@color/colorLightGreen"
+                        android:text="View"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <!--            TABLE TENNIS-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/TableTennis_Img"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:src="@raw/beauty2" />
+
+                    <TextView
+                        android:id="@+id/TableTennis_Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toEndOf="@+id/TableTennis_Img"
+                        android:text="Table Tennis Information"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/TableTennis_View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="3dp"
+                        android:backgroundTint="@color/colorLightGreen"
+                        android:text="View"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <!--            SQUASH-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/Squash_Img"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:src="@raw/beauty2" />
+
+                    <TextView
+                        android:id="@+id/Squash_Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toEndOf="@+id/Squash_Img"
+                        android:text="Squash Information"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/Squash_View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="3dp"
+                        android:backgroundTint="@color/colorLightGreen"
+                        android:text="View"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
