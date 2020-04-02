@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
     private EditText Cast_Email, Cast_Pass;
@@ -51,11 +51,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Create_acc:
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                startActivity(new Intent(Login.this, SignUp.class));
                 break;
 
             case R.id.Forgot_Pass:
-                startActivity(new Intent(LoginActivity.this, ForgotPassActivity.class));
+                startActivity(new Intent(Login.this, ForgotPass.class));
                 break;
 
             case R.id.Login_Btn:
@@ -92,11 +92,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "SignIn Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            Toast.makeText(Login.this, "SignIn Successfully", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(Login.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            finish();
+                            startActivity(intent);
+
                         } else {
                             String error = task.getException().toString();
-                            Toast.makeText(LoginActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
 
                     }

@@ -6,15 +6,16 @@ public class Utility {
 
 
     //    Time Stamp Handler
-    public static String TimeStampHandle(long time) {
+    public static String TimeStampHandle(double timeStamp) {
 
+        long time = (long) timeStamp;
 
         long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - time);
         long hours = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - time);
         long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - time);
 
-        String timeAgo = null;
+        String timeAgo = "";
 
         if (seconds < 60) {
             timeAgo = seconds + " sec";

@@ -12,11 +12,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class SlideShowAdapter extends PagerAdapter {
+public class SportsSlideShow extends PagerAdapter {
     private Context context;
     private ArrayList<String> imageUrls;
 
-    public SlideShowAdapter(Context context, ArrayList<String> imageUrls) {
+    public SportsSlideShow(Context context, ArrayList<String> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
     }

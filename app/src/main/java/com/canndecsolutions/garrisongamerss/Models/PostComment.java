@@ -1,19 +1,24 @@
 package com.canndecsolutions.garrisongamerss.Models;
 
-public class CommentsModelClass {
+import androidx.fragment.app.FragmentActivity;
+
+import java.util.List;
+
+public class PostComment {
     private String posted_by, comment, comid;
     private Double timestamp;
 
 
-    public CommentsModelClass() {
+    public PostComment() {
     }
 
-    public CommentsModelClass(String posted_by, String comment, String comid, Double timestamp) {
+    public PostComment(String posted_by, String comment, String comid, Double timestamp) {
         this.posted_by = posted_by;
         this.comment = comment;
         this.comid = comid;
         this.timestamp = timestamp;
     }
+
 
 //    GETTERS
 
@@ -35,7 +40,6 @@ public class CommentsModelClass {
 
 
 //    SETTERS
-
 
     public void setPosted_by(String posted_by) {
         this.posted_by = posted_by;

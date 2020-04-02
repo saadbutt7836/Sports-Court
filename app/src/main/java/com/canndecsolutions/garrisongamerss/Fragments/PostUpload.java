@@ -13,31 +13,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.canndecsolutions.garrisongamerss.Models.PostsModelClass;
+import com.canndecsolutions.garrisongamerss.Models.Posts;
 import com.canndecsolutions.garrisongamerss.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,13 +40,15 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import id.zelory.compressor.Compressor;
 
-public class PostFragment extends Fragment implements View.OnClickListener {
+public class PostUpload extends Fragment implements View.OnClickListener {
 
 
     //    CONSTANST
@@ -62,6 +59,8 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     private Button Cast_Post_Btn;
     private ImageButton Cast_Image_Select;
     private ImageView Cast_Post_Img;
+    private Spinner Cast_sp_SportsCategory;
+
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase, UserRef, PostRef;
@@ -69,6 +68,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
     private String userId = null,
             saveableImgUrl = null,
+            selectedSport = null,
             status = null;
     private int type = 0;
 
@@ -78,6 +78,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         FirebaseCasting();
 
@@ -90,9 +91,12 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
+
         WidgetsCasting(view);
 
-        Cast_Post_Btn.setOnClickListener(this);
+        SportsMenu();
+
+
         return view;
     }
 
@@ -102,8 +106,11 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         Cast_Image_Select = (ImageButton) view.findViewById(R.id.Image_Select);
         Cast_Post_Img = (ImageView) view.findViewById(R.id.Post_Img);
         Cast_Post_Btn = (Button) view.findViewById(R.id.Post_Btn);
+        Cast_sp_SportsCategory = (Spinner) view.findViewById(R.id.sp_SportsCategory);
 
 
+//        CLICK LISTENERS
+        Cast_Post_Btn.setOnClickListener(this);
         Cast_Image_Select.setOnClickListener(this);
         Cast_Post_Text.setText("");
     }
@@ -131,16 +138,14 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                 } else if (status.isEmpty()) {
 
 //                    ONLY IMAGE UPDATED SUCCESSFULLY
-
                     type = 1;
                     status = "";
                     ImageUploadANDGetURL();
 //                    PostUpload(status, ImageUploadANDGetURL(), type);
 
-                    Toast.makeText(getActivity(), "no caption only image", Toast.LENGTH_SHORT).show();
                 } else if (!status.isEmpty() && postUri != null) {
 
-                    //                   BOTH STATUS AND IMAGE UPLOAD
+                    //         BOTH STATUS AND IMAGE UPLOAD
                     type = 2;
                     ImageUploadANDGetURL();
 //                    PostUpload(status, ImageUploadANDGetURL(), type);
@@ -182,10 +187,13 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     private void FirebaseCasting() {
         mAuth = FirebaseAuth.getInstance();
 
+//        DATABASE REFERENCES
         mDatabase = FirebaseDatabase.getInstance().getReference();
         UserRef = mDatabase.child("Users");
         PostRef = mDatabase.child("Posts");
 
+
+//        STORAGE REFERENCES
         mStorage = FirebaseStorage.getInstance().getReference();
         PostStorage = mStorage.child("Posts");
         PostImgStorage = PostStorage.child("images/");
@@ -216,6 +224,39 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 //            }
 //        });
 
+    }
+
+    private void SportsMenu() {
+
+        //        COURSE ARRAY
+        List<String> Sp_Category_Array = new ArrayList<>();
+        Sp_Category_Array.add(0, "Cricket");
+        Sp_Category_Array.add("Football");
+        Sp_Category_Array.add("Badminton");
+        Sp_Category_Array.add("Tennis");
+        Sp_Category_Array.add("Table Tennis");
+        Sp_Category_Array.add("Squash");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, Sp_Category_Array);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+
+        Cast_sp_SportsCategory.setAdapter(adapter);
+
+        Cast_sp_SportsCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (adapterView.getItemAtPosition(i).equals("BSCS")) {
+
+                } else {
+                    selectedSport = adapterView.getItemAtPosition(i).toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void GalleryPermission() {
@@ -255,7 +296,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             CompressedImg.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             finalImg = baos.toByteArray();
-            Toast.makeText(getActivity(), "e: " + finalImg, Toast.LENGTH_SHORT).show();
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -306,7 +347,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
 
         Double timeStamp = Double.valueOf(System.currentTimeMillis());
-        PostsModelClass post = new PostsModelClass(pid, userId, status, postImg, timeStamp, type);
+        Posts post = new Posts(pid, userId, status, postImg, selectedSport, timeStamp, type);
 
         Map<String, Object> postValues = post.toMap();
 
@@ -316,26 +357,21 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 //        childUpdates.put("/User-Posts/" + userId + "/" + pid, postValues);star
 
 
-
-
-
-
-
         mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getActivity(), "Post Uploaded Successfully", Toast.LENGTH_SHORT).show();
                 Cast_Post_Text.setText("");
+                postUri = null;
                 Cast_Post_Img.setImageURI(null);
             }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String error = e.getMessage();
-                        Toast.makeText(getActivity(), "Error: " + error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                String error = e.getMessage();
+                Toast.makeText(getActivity(), "Error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -351,4 +387,5 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         }
         return result;
     }
+
 }

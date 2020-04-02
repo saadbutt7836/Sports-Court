@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    tools:context=".Fragments.PostFragment">
+    tools:context=".Fragments.PostUpload">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,15 +23,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:hint="Write something..."
+                android:hint="@string/write_something"
                 android:maxHeight="200dp"
                 android:maxLength="200"
                 android:minHeight="100dp" />
 
             <LinearLayout
+                android:id="@+id/Spinner_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Post_Text"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/Image_Icons_Border">
+
+                <Spinner
+                    android:id="@+id/sp_SportsCategory"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="2.0dip" />
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:id="@+id/Image_Icons_Border"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_below="@id/Post_Text"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/round_corner_stroke_layout"
@@ -40,16 +56,16 @@
 
                 <ImageButton
                     android:id="@+id/Image_Select"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:background="@drawable/gallery_icon"/>
+                    android:background="@drawable/gallery_icon" />
             </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/Image_Icons_Border">
+                android:layout_below="@+id/Spinner_layout">
 
                 <ImageView
                     android:id="@+id/Post_Img"
@@ -68,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:backgroundTint="@color/colorLightBlue"
+            android:backgroundTint="@color/colorLightGreen"
             android:text="upload"
             android:textColor="@color/colorWhite"
             android:textStyle="bold" />

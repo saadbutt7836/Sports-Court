@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:backgroundTint="@color/colorOutline"
-    tools:context=".Fragments.SettingsFragment">
+    tools:context=".Fragments.Settings">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,29 +65,31 @@
                 android:layout_marginTop="50dp"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="5dp">-->
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/profile" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="30dp"-->
+<!--                        android:src="@drawable/profile" />-->
 
-                    <TextView
-                        android:id="@+id/My_Posts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/my_posts"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="15sp" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/My_Posts"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="15dp"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:text="@string/my_posts"-->
+<!--                        android:textColor="@color/colorBlack"-->
+<!--                        android:textSize="15sp" />-->
+<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -108,7 +111,31 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_local_phone" />
+
+                    <TextView
+                        android:id="@+id/Contact_Us"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/contact_us"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
 
                     <ImageView
                         android:layout_width="30dp"

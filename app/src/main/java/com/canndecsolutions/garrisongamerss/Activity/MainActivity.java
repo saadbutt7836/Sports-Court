@@ -13,13 +13,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.canndecsolutions.garrisongamerss.Authentication.LoginActivity;
-import com.canndecsolutions.garrisongamerss.Fragments.HomeFragment;
-import com.canndecsolutions.garrisongamerss.Fragments.BookingFragment;
-import com.canndecsolutions.garrisongamerss.Fragments.PostFragment;
-import com.canndecsolutions.garrisongamerss.Fragments.SettingsFragment;
-import com.canndecsolutions.garrisongamerss.Fragments.SuggestionFragment;
-import com.canndecsolutions.garrisongamerss.HandlingActivity;
+import com.canndecsolutions.garrisongamerss.Authentication.Login;
+import com.canndecsolutions.garrisongamerss.Fragments.Home;
+import com.canndecsolutions.garrisongamerss.Fragments.Booking;
+import com.canndecsolutions.garrisongamerss.Fragments.PostUpload;
+import com.canndecsolutions.garrisongamerss.Fragments.Settings;
+import com.canndecsolutions.garrisongamerss.Fragments.Suggestion;
 import com.canndecsolutions.garrisongamerss.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +27,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -43,11 +41,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout Cast_Main_Frame;
 
     //    FRAGMENTS
-    private HomeFragment Cast_Home_Frame;
-    private BookingFragment Cast_Offers_Frame;
-    private PostFragment Cast_Post_Frame;
-    private SuggestionFragment Cast_Suggest_Frame;
-    private SettingsFragment Cast_Profile_Frame;
+    private Home Cast_Home_Frame;
+    private Booking Cast_Offers_Frame;
+    private PostUpload Cast_Post_Frame;
+    private Suggestion Cast_Suggest_Frame;
+    private Settings Cast_Profile_Frame;
 
     //    FIREBASE REFERENCES
     private FirebaseAuth mAuth;
@@ -115,13 +113,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Profile_Btn:
-                Intent intent = new Intent(this, HandlingActivity.class);
+                Intent intent = new Intent(this, UsersProfile.class);
                 intent.putExtra("User_Id", userId);
                 startActivity(intent);
                 break;
@@ -138,11 +137,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Cast_BotmNavView = (BottomNavigationView) findViewById(R.id.BotmNavView);
         Cast_Main_Frame = (FrameLayout) findViewById(R.id.Main_Frame);
 
-        Cast_Home_Frame = new HomeFragment();
-        Cast_Offers_Frame = new BookingFragment();
-        Cast_Post_Frame = new PostFragment();
-        Cast_Suggest_Frame = new SuggestionFragment();
-        Cast_Profile_Frame = new SettingsFragment();
+        Cast_Home_Frame = new Home();
+        Cast_Offers_Frame = new Booking();
+        Cast_Post_Frame = new PostUpload();
+        Cast_Suggest_Frame = new Suggestion();
+        Cast_Profile_Frame = new Settings();
 
         SetFragment(Cast_Home_Frame);
 
@@ -153,12 +152,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updateUI(FirebaseUser currentUser) {
 
         if (currentUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, Login.class));
 
         } else {
-            RetrieveUserInfo();
+            userId = mAuth.getCurrentUser().getUid();
+            UserRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists() && dataSnapshot.hasChild("interests")) {
 
+                        String profileImg = dataSnapshot.child("profile_img").getValue().toString();
+                        Picasso.get().load(profileImg).into(Cast_Profile_Img);
+
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, SportsInterest.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        finish();
+                        startActivity(intent);
+                        System.out.println("Select your interest");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    String error = databaseError.getMessage();
+                    Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+//        else {
+//            RetrieveUserInfo();
+//            userId = mAuth.getCurrentUser().getUid();
+//        }
     }
 
     private void SetFragment(Fragment fragment) {
@@ -175,31 +200,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         UserRef = mDatabase.child("Users");
 
-        userId = mAuth.getCurrentUser().getUid();
 
     }
 
-    private void RetrieveUserInfo() {
-        String currentUserId = mAuth.getCurrentUser().getUid();
-
-        UserRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    String profileImg = dataSnapshot.child("profile_img").getValue().toString();
-                    Picasso.get().load(profileImg).into(Cast_Profile_Img);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                String error = databaseError.getMessage();
-                Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void RetrieveUserInfo() {
+//        String currentUserId = mAuth.getCurrentUser().getUid();
+//
+//        UserRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if () {
+//
+//                    String profileImg = dataSnapshot.child("profile_img").getValue().toString();
+//                    Picasso.get().load(profileImg).into(Cast_Profile_Img);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                String error = databaseError.getMessage();
+//                Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 
 }

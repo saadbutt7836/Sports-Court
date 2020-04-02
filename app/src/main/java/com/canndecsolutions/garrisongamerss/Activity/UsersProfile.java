@@ -5,21 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canndecsolutions.garrisongamerss.Fragments.HomeFragment;
-import com.canndecsolutions.garrisongamerss.Models.PostsModelClass;
+import com.canndecsolutions.garrisongamerss.Models.Posts;
 import com.canndecsolutions.garrisongamerss.R;
 import com.canndecsolutions.garrisongamerss.Sheets.FullScreenBottomSheet;
 import com.canndecsolutions.garrisongamerss.Utility.Utility;
@@ -40,7 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class UsersProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class UsersProfile extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView Cast_Back_Press;
 
@@ -51,12 +48,12 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
 
 
     //    FIREBASE ADAPTER
-    private FirebaseRecyclerAdapter<PostsModelClass, PostsViewHolder> adapter;
-    private FirebaseRecyclerOptions<PostsModelClass> options;
+    private FirebaseRecyclerAdapter<Posts, PostsViewHolder> adapter;
+    private FirebaseRecyclerOptions<Posts> options;
 
 
     //    VARIABLES
-    private String userId = null,
+    private String currentUserId = null,
             postUserId = null,
             currName = null,
             currEmail = null,
@@ -145,9 +142,9 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
 
     private void RetrieveUserData() {
 
-        userId = mAuth.getCurrentUser().getUid();
+        currentUserId = mAuth.getCurrentUser().getUid();
 
-        UserRef.child(userId).addValueEventListener(new ValueEventListener() {
+        UserRef.child(postUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -183,7 +180,7 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 String error = databaseError.getMessage();
-                Toast.makeText(UsersProfileActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UsersProfile.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -191,19 +188,45 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
 
     private void FirebaseAdapter() {
         Query query = PostRef.orderByChild("posted_by").equalTo(postUserId);
-        options = new FirebaseRecyclerOptions.Builder<PostsModelClass>().setQuery(query, PostsModelClass.class).build();
-        adapter = new FirebaseRecyclerAdapter<PostsModelClass, PostsViewHolder>(options) {
+        options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(query, Posts.class).build();
+        adapter = new FirebaseRecyclerAdapter<Posts, PostsViewHolder>(options) {
 
             @Override
-            protected void onBindViewHolder(@NonNull final PostsViewHolder holder, final int position, @NonNull final PostsModelClass model) {
+            protected void onBindViewHolder(@NonNull final PostsViewHolder holder, final int position, @NonNull final Posts model) {
 
 
-                if (model.stars.containsKey(userId)) {
+                if (model.stars.containsKey(currentUserId)) {
                     // Unstar the post and remove self from stars
 
                     holder.Cast_Unlike_Img.setImageResource(R.drawable.star);
 
                 }
+
+                //                ====================================   SETS THE VALUES OF POSTS  ========================================
+                int type = model.getType();
+
+                holder.Cast_Post_TimeStamp.setText(Utility.TimeStampHandle(model.getTimestamp()));
+
+
+//                CHECKING WHICH TYPE OF POST COMING
+                if (type == 0) {
+//                    Only Text Messages
+                    holder.Cast_Post_Text.setText(model.getStatus());
+                    Picasso.get().load((Uri) null).into(holder.Cast_Post_Img);
+                } else if (type == 1) {
+//                    Only Images
+                    Picasso.get().load(model.getPost_image()).into(holder.Cast_Post_Img);
+                    holder.Cast_Post_Text.setVisibility(View.GONE);
+                } else if (type == 2) {
+//                    Both Text and Images
+                    holder.Cast_Post_Text.setText(model.getStatus());
+                    Picasso.get().load(model.getPost_image()).into(holder.Cast_Post_Img);
+                }
+
+
+//                GET POST OWNER KEY AND RETRIEVE INFORMATION
+                SetValueOfPostedUser(model.getPosted_by(), holder);
+
 
 //                ==================================== CLICK LISTENERS ================================
 
@@ -214,54 +237,23 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onClick(View v) {
 
+                        OnStarClicked(PostRef.child(pId), pId, holder);
 
-                        PostRef.child(pId).runTransaction(new Transaction.Handler() {
-                            @Override
-                            public Transaction.Result doTransaction(MutableData mutableData) {
-                                PostsModelClass p = mutableData.getValue(PostsModelClass.class);
-                                if (p == null) {
-                                    return Transaction.success(mutableData);
-                                }
+                        if (model.stars.containsKey(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            // Unstar the post and remove self from stars
 
-                                if (p.stars.containsKey(userId)) {
-                                    // Unstar the post and remove self from stars
-                                    p.starCount = p.starCount - 1;
-                                    p.stars.remove(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            holder.Cast_Unlike_Img.setImageResource(R.drawable.star);
 
-                                    holder.Cast_Unlike_Img.setImageResource(R.drawable.star);
+                        } else {
+//                            // Star the post and add self to stars
+                            holder.Cast_Unlike_Img.setImageResource(R.drawable.unstar);
 
-                                } else {
-                                    // Star the post and add self to stars
-                                    p.starCount = p.starCount + 1;
-                                    p.stars.put(userId, true);
-
-                                    holder.Cast_Unlike_Img.setImageResource(R.drawable.unstar);
-
-
-                                }
-
-                                // Set value and report transaction success
-                                mutableData.setValue(p);
-                                return Transaction.success(mutableData);
-                            }
-
-                            @Override
-                            public void onComplete(DatabaseError databaseError, boolean b,
-                                                   DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-                            }
-                        });
+                        }
                     }
                 });
 
 
-//                GET POST OWNER KEY AND RETRIEVE INFORMATION
-                GetUserKeyAndShowInfo(model.getPosted_by(), holder);
-
-//                SETS THE VALUES OF POSTS
-                ShowPostData(model, holder);
-
+//                POSTS COMMENTS HANDLE
                 holder.Cast_Comments.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -271,10 +263,9 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
                         FullScreenBottomSheet bottomSheet = new FullScreenBottomSheet();
                         bottomSheet.setArguments(args);
                         bottomSheet.show(getSupportFragmentManager(), bottomSheet.getTag());
-
-
                     }
                 });
+
 
             }
 
@@ -299,28 +290,44 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
         Cast_RecyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    private void GetUserKeyAndShowInfo(String postedBy, final PostsViewHolder holder) {
 
-        Query query = UserRef.orderByChild("uid").equalTo(postedBy);
-        query.addValueEventListener(new ValueEventListener() {
+    private void OnStarClicked(DatabaseReference PostRef, String pId, final PostsViewHolder holder) {
+        PostRef.runTransaction(new Transaction.Handler() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String userKey = snapshot.getKey();
-                    SetValueOfPostedUser(userKey, holder);
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Posts p = mutableData.getValue(Posts.class);
+                if (p == null) {
+                    return Transaction.success(mutableData);
                 }
+
+                if (p.stars.containsKey(currentUserId)) {
+                    // Unstar the post and remove self from stars
+                    p.starCount = p.starCount - 1;
+                    p.stars.remove(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
+                } else {
+                    // Star the post and add self to stars
+                    p.starCount = p.starCount + 1;
+                    p.stars.put(currentUserId, true);
+
+
+                }
+
+                // Set value and report transaction success
+                mutableData.setValue(p);
+                return Transaction.success(mutableData);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                String error = databaseError.getMessage();
-                Toast.makeText(UsersProfileActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
         });
-
     }
+
 
     private void SetValueOfPostedUser(String key, final PostsViewHolder holder) {
         UserRef.child(key).addValueEventListener(new ValueEventListener() {
@@ -339,32 +346,9 @@ public class UsersProfileActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 String error = databaseError.getMessage();
-                Toast.makeText(UsersProfileActivity.this, "error: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UsersProfile.this, "error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void ShowPostData(PostsModelClass model, PostsViewHolder holder) {
-        int type = model.getType();
-
-
-//                CHECKING WHICH TYPE OF POST COMING
-        if (type == 0) {
-
-            holder.Cast_Post_Text.setText(model.getStatus());
-
-        } else if (type == 1) {
-
-            holder.Cast_Post_Text.setVisibility(View.GONE);
-            Picasso.get().load(model.getPost_image()).into(holder.Cast_Post_Img);
-
-        } else if (type == 2) {
-
-            holder.Cast_Post_Text.setText(model.getStatus());
-            Picasso.get().load(model.getPost_image()).into(holder.Cast_Post_Img);
-        }
-
-        holder.Cast_Post_TimeStamp.setText(Utility.TimeStampHandle((long) model.getTimestamp()));
     }
 
 

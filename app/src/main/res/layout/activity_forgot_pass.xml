@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".Authentication.ForgotPassActivity">
+    tools:context=".Authentication.ForgotPass">
 
     <EditText
         android:id="@+id/Email"

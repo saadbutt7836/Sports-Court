@@ -14,7 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ForgotPassActivity extends AppCompatActivity implements View.OnClickListener {
+public class ForgotPass extends AppCompatActivity implements View.OnClickListener {
 
     private EditText Cast_Email;
     private Button Cast_Forgot_Pass_Done;
@@ -58,10 +58,10 @@ public class ForgotPassActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ForgotPassActivity.this, "Please Check Your Email", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPass.this, "Please Check Your Email", Toast.LENGTH_SHORT).show();
                         } else {
                             String error = task.getException().toString();
-                            Toast.makeText(ForgotPassActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPass.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

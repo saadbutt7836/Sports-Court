@@ -5,21 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.canndecsolutions.garrisongamerss.Activity.SportsInfoActivity;
-import com.canndecsolutions.garrisongamerss.Activity.UsersProfileActivity;
+import com.canndecsolutions.garrisongamerss.Activity.SportsBooking;
+import com.canndecsolutions.garrisongamerss.Models.SportsUrls;
 import com.canndecsolutions.garrisongamerss.R;
+import com.squareup.picasso.Picasso;
 
 
-public class BookingFragment extends Fragment implements View.OnClickListener {
+public class Booking extends Fragment implements View.OnClickListener {
 
 
     private Button Cast_Cricket_View,
@@ -28,6 +27,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
             Cast_Tennis_View,
             Cast_TableTennis_View,
             Cast_Squash;
+
+    private ImageView Cast_Cricket_Img, Cast_Football_Img, Cast_Tennis_Img, Cast_TableTennis_Img, Cast_Badminton_Img, Cast_Squash_Img;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
 
         CastingWidgets(view);
+
+        SetImages();
+
         return view;
     }
 
@@ -82,6 +86,13 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
 
     private void CastingWidgets(View view) {
 
+        Cast_Cricket_Img = (ImageView) view.findViewById(R.id.Cricket_Img);
+        Cast_Football_Img = (ImageView) view.findViewById(R.id.Football_Img);
+        Cast_Tennis_Img = (ImageView) view.findViewById(R.id.Tennis_Img);
+        Cast_TableTennis_Img = (ImageView) view.findViewById(R.id.TableTennis_Img);
+        Cast_Badminton_Img = (ImageView) view.findViewById(R.id.Badminton_Img);
+        Cast_Squash_Img = (ImageView) view.findViewById(R.id.Squash_Img);
+
         Cast_Cricket_View = (Button) view.findViewById(R.id.Cricket_View);
         Cast_Football_view = (Button) view.findViewById(R.id.Football_View);
         Cast_Badminton_View = (Button) view.findViewById(R.id.Badminton_View);
@@ -102,9 +113,19 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void SetImages() {
+
+        Picasso.get().load(SportsUrls.CRICKET).into(Cast_Cricket_Img);
+        Picasso.get().load(SportsUrls.FOOTBALL).into(Cast_Football_Img);
+        Picasso.get().load(SportsUrls.TENNIS).into(Cast_Tennis_Img);
+        Picasso.get().load(SportsUrls.TABLE_TENNIS).into(Cast_TableTennis_Img);
+        Picasso.get().load(SportsUrls.BADMINTON).into(Cast_Badminton_Img);
+        Picasso.get().load(SportsUrls.SQUASH).into(Cast_Squash_Img);
+
+    }
 
     private void ViewInformation(String view) {
-        Intent intent = new Intent(getActivity(), SportsInfoActivity.class);
+        Intent intent = new Intent(getActivity(), SportsBooking.class);
         intent.putExtra("view", view);
         startActivity(intent);
     }

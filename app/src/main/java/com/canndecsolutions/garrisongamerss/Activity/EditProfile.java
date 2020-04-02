@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canndecsolutions.garrisongamerss.R;
@@ -20,15 +18,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditProfile extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView Cast_Back_Press;
     private Button Cast_Update_Btn;
@@ -63,6 +58,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 onBackPressed();
                 break;
             case R.id.Update_Btn:
+
+
                 String updateName = Cast_FullName.getText().toString().trim();
                 String updatePhoneNo = Cast_Phone_No.getText().toString().trim();
 
@@ -85,6 +82,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         Cast_Phone_No = (EditText) findViewById(R.id.Phone_No);
         Cast_Update_Btn = (Button) findViewById(R.id.Update_Btn);
 
+//        FORCE FULLY WRITE FIREST LETTER CAPITAL
+
+
+//        CLICK LISTENERS
         Cast_Back_Press.setOnClickListener(this);
         Cast_Update_Btn.setOnClickListener(this);
 
@@ -131,7 +132,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 String error = databaseError.getMessage();
-                Toast.makeText(EditProfileActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -147,13 +148,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(EditProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfile.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
 
 //                    BACK TO USER PROFILE
                     onBackPressed();
                 } else {
                     String error = task.getException().toString();
-                    Toast.makeText(EditProfileActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfile.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                 }
             }
         });

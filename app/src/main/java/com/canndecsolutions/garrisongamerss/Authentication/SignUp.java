@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canndecsolutions.garrisongamerss.Activity.SportsInterest;
 import com.canndecsolutions.garrisongamerss.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     private EditText Cast_Full_Name, Cast_Email, Cast_Pass, Cast_Phone_No;
     private TextView Cast_Already_Acc;
@@ -47,13 +48,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_up);
 
 
+//        REMOVE HEADER
+        getSupportActionBar().hide();
+
+
 //        CALLING CASTING METHODS
         FirebaseCasting();
 
         CastingWidgets();
 
-        Cast_Already_Acc.setOnClickListener(this);
-        Cast_SignUp_Btn.setOnClickListener(this);
 
     }
 
@@ -61,10 +64,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Already_Acc:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, Login.class));
                 break;
 
             case R.id.SignUp_Btn:
+
+
                 fullName = Cast_Full_Name.getText().toString().trim();
                 email = Cast_Email.getText().toString().trim();
                 password = Cast_Pass.getText().toString().trim();
@@ -96,6 +101,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 } else {
                     Toast.makeText(this, "All fields must be filled", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUp.this, SportsInterest.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(intent);
+
                 }
 
 
@@ -109,9 +119,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void CastingWidgets() {
 
-//        REMOVE HEADER
-        getSupportActionBar().hide();
-
 
         Cast_Full_Name = (EditText) findViewById(R.id.Full_Name);
         Cast_Email = (EditText) findViewById(R.id.Email);
@@ -120,6 +127,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Cast_Already_Acc = (TextView) findViewById(R.id.Already_Acc);
         Cast_SignUp_Btn = (Button) findViewById(R.id.SignUp_Btn);
 
+
+        //  CLICK LISTENERS
+        Cast_Already_Acc.setOnClickListener(this);
+        Cast_SignUp_Btn.setOnClickListener(this);
 
     }
 
@@ -151,7 +162,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                         } else {
                             String error = task.getException().toString();
-                            Toast.makeText(SignUpActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "Error: " + error, Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -171,19 +182,26 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         UserDataMap.put("name", fullName);
         UserDataMap.put("email", email);
         UserDataMap.put("profile_img", defaultImg);
-//        UserDataMap.put("password", pass);
+        UserDataMap.put("password", pass);
         UserDataMap.put("telephone", phoneNo);
+
+
+
+
 
         UserRef.child(currentUserId).setValue(UserDataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(SignUpActivity.this, "Data Saved Successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                    Toast.makeText(SignUp.this, "Data Saved Successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUp.this, SportsInterest.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(intent);
                 } else {
 
                     String error = task.getException().toString();
-                    Toast.makeText(SignUpActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                 }
             }
         });

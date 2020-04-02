@@ -5,25 +5,27 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PostsModelClass {
+public class Posts {
 
-    private String pid, posted_by, status, post_image;
+    private String pid, posted_by, status, post_image, category;
     private double timestamp;
     private int type;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
 
-    public PostsModelClass() {
+    public Posts() {
     }
 
 
-    public PostsModelClass(String pid, String posted_by, String status, String post_image, double timestamp, int type) {
+    public Posts(String pid, String posted_by, String status, String post_image, String category, double timestamp, int type) {
         this.pid = pid;
         this.posted_by = posted_by;
         this.status = status;
         this.post_image = post_image;
+        this.category = category;
         this.timestamp = timestamp;
         this.type = type;
+
     }
 
     @Exclude
@@ -31,6 +33,7 @@ public class PostsModelClass {
         HashMap<String, Object> result = new HashMap<>();
         result.put("pid", pid);
         result.put("timestamp", timestamp);
+        result.put("category", category);
         result.put("type", type);
         result.put("post_image", post_image);
         result.put("posted_by", posted_by);
@@ -68,6 +71,14 @@ public class PostsModelClass {
 
     public int getType() {
         return type;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public int getStarCount() {

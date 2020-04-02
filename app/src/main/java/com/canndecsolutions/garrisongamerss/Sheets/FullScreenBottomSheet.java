@@ -1,17 +1,15 @@
 package com.canndecsolutions.garrisongamerss.Sheets;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,8 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.canndecsolutions.garrisongamerss.Adapters.CommentsAdapter;
-import com.canndecsolutions.garrisongamerss.Models.CommentsModelClass;
+import com.canndecsolutions.garrisongamerss.Adapters.PostComments;
+import com.canndecsolutions.garrisongamerss.Models.PostComment;
 import com.canndecsolutions.garrisongamerss.R;
 import com.canndecsolutions.garrisongamerss.Utility.Utility;
 import com.canndecsolutions.garrisongamerss.databinding.CommentBottomsheetViewBinding;
@@ -44,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.database.core.Context;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,8 +62,8 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase, UserRef, PostRef, PostCommentsRef;
 
-    private FirebaseRecyclerAdapter<CommentsModelClass, FullScreenBottomSheet.CommentsViewHolder> adapter;
-    private FirebaseRecyclerOptions<CommentsModelClass> options;
+    private FirebaseRecyclerAdapter<PostComment, FullScreenBottomSheet.CommentsViewHolder> adapter;
+    private FirebaseRecyclerOptions<PostComment> options;
 
     private CircleImageView Cast_Send_Btn;
     private EditText Cast_Comments_EditText;
@@ -77,9 +76,9 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
 
 
     //    ARRAYLIST
-    private final List<CommentsModelClass> commentsList = new ArrayList<>();
+    private final List<PostComment> commentsList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
-    private CommentsAdapter commentsAdapter;
+    private PostComments postComments;
 
     private Query query = null;
 
@@ -205,90 +204,90 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
 
 //===================================================== FIREBASE + CHILD EVENT LISTENER ===================================================
 
-    private void FIREBASECJILD() {
-        query = PostCommentsRef.child(postId);
+//    private void FIREBASECJILD() {
+//        query = PostCommentsRef.child(postId);
+//
+//
+//        ChildEventListener childEventListener = new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+////                Cast_RecyclerView.smoothScrollToPosition(adapter.getItemCount());
+////                Log.d("print", String.valueOf(adapter.getItemCount()));
+//
+//                PostComments modelClass = dataSnapshot.getValue(PostComments.class);
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        };
+//
+//        query.addChildEventListener(childEventListener);
+////        extraadap();
+//    }
+
+//    private void extraadap() {
+//
+//
+////        ===================== RECYCLER OPTIONS===========================
+//        options = new FirebaseRecyclerOptions.Builder<PostComment>().setQuery(query, PostComment.class).build();
+//        adapter = new FirebaseRecyclerAdapter<PostComment, CommentsViewHolder>(options) {
+//
+//            @Override
+//            protected void onBindViewHolder(@NonNull final CommentsViewHolder holder, final int position, @NonNull final PostComments model) {
+//
+//
+////                GET POST OWNER KEY AND RETRIEVE INFORMATION
+//                GetUserKeyAndShowInfo(model.getPosted_by(), holder);
+//
+////                SETS THE VALUES OF POSTS
+//                ShowComments(model, holder);
+//
+//
+//            }
+//
+//            @NonNull
+//            @Override
+//            public CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_comments_layout, parent, false);
+//
+//                CommentsViewHolder viewHolder = new CommentsViewHolder(view);
+//
+//                return viewHolder;
+//            }
+//        };
+//
+//        Cast_RecyclerView.setAdapter(adapter);
+//
+//
+////        Layout Manager Handling
+//        Cast_RecyclerView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+//        linearLayoutManager.setStackFromEnd(true);
+//        Cast_RecyclerView.setLayoutManager(linearLayoutManager);
+//
+//    }
 
 
-        ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-//                Cast_RecyclerView.smoothScrollToPosition(adapter.getItemCount());
-//                Log.d("print", String.valueOf(adapter.getItemCount()));
-
-                CommentsModelClass modelClass = dataSnapshot.getValue(CommentsModelClass.class);
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        query.addChildEventListener(childEventListener);
-        extraadap();
-    }
-
-    private void extraadap() {
-
-
-//        ===================== RECYCLER OPTIONS===========================
-        options = new FirebaseRecyclerOptions.Builder<CommentsModelClass>().setQuery(query, CommentsModelClass.class).build();
-        adapter = new FirebaseRecyclerAdapter<CommentsModelClass, CommentsViewHolder>(options) {
-
-            @Override
-            protected void onBindViewHolder(@NonNull final CommentsViewHolder holder, final int position, @NonNull final CommentsModelClass model) {
-
-
-//                GET POST OWNER KEY AND RETRIEVE INFORMATION
-                GetUserKeyAndShowInfo(model.getPosted_by(), holder);
-
-//                SETS THE VALUES OF POSTS
-                ShowComments(model, holder);
-
-
-            }
-
-            @NonNull
-            @Override
-            public CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_comments_layout, parent, false);
-
-                CommentsViewHolder viewHolder = new CommentsViewHolder(view);
-
-                return viewHolder;
-            }
-        };
-
-        Cast_RecyclerView.setAdapter(adapter);
-
-
-//        Layout Manager Handling
-        Cast_RecyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        linearLayoutManager.setStackFromEnd(true);
-        Cast_RecyclerView.setLayoutManager(linearLayoutManager);
-
-    }
-
-
-    //    ======================================================== CALLING METHODS ======================================================
+//        ======================================================== CALLING METHODS ======================================================
 
     private void WidgetCastings(View view, CommentBottomsheetViewBinding bi) {
 
@@ -317,50 +316,50 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
 
     }
 
-    private void FirebaseAdapter() {
-
-
-        options = new FirebaseRecyclerOptions.Builder<CommentsModelClass>().setQuery(PostCommentsRef.child(postId), CommentsModelClass.class).build();
-        adapter = new FirebaseRecyclerAdapter<CommentsModelClass, CommentsViewHolder>(options) {
-
-            @Override
-            protected void onBindViewHolder(@NonNull final CommentsViewHolder holder, final int position, @NonNull final CommentsModelClass model) {
-
-
-                //                GET POST OWNER KEY AND RETRIEVE INFORMATION
-                GetUserKeyAndShowInfo(model.getPosted_by(), holder);
-
-//                SETS THE VALUES OF POSTS
-                ShowComments(model, holder);
-
-
-            }
-
-            @NonNull
-            @Override
-            public CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_comments_layout, parent, false);
-
-                CommentsViewHolder viewHolder = new CommentsViewHolder(view);
-
-                return viewHolder;
-            }
-        };
-
-
-        Cast_RecyclerView.setAdapter(adapter);
-
-        adapter.startListening();
-//        Cast_RecyclerView.smoothScrollToPosition(adapter.getItemCount());
-        Log.d("print", String.valueOf(adapter.getItemCount()));
-
-//        Layout Manager Handling
-        Cast_RecyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        linearLayoutManager.setStackFromEnd(true);
-        Cast_RecyclerView.setLayoutManager(linearLayoutManager);
-    }
+//    private void FirebaseAdapter() {
+//
+//
+//        options = new FirebaseRecyclerOptions.Builder<PostComment>().setQuery(PostCommentsRef.child(postId), PostComment.class).build();
+//        adapter = new FirebaseRecyclerAdapter<PostComment, CommentsViewHolder>(options) {
+//
+//            @Override
+//            protected void onBindViewHolder(@NonNull final CommentsViewHolder holder, final int position, @NonNull final PostComments model) {
+//
+//
+//                //                GET POST OWNER KEY AND RETRIEVE INFORMATION
+//                GetUserKeyAndShowInfo(model.getPosted_by(), holder);
+//
+////                SETS THE VALUES OF POSTS
+//                ShowComments(model, holder);
+//
+//
+//            }
+//
+//            @NonNull
+//            @Override
+//            public CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_comments_layout, parent, false);
+//
+//                CommentsViewHolder viewHolder = new CommentsViewHolder(view);
+//
+//                return viewHolder;
+//            }
+//        };
+//
+//
+//        Cast_RecyclerView.setAdapter(adapter);
+//
+//        adapter.startListening();
+////        Cast_RecyclerView.smoothScrollToPosition(adapter.getItemCount());
+//        Log.d("print", String.valueOf(adapter.getItemCount()));
+//
+////        Layout Manager Handling
+//        Cast_RecyclerView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+//        linearLayoutManager.setStackFromEnd(true);
+//        Cast_RecyclerView.setLayoutManager(linearLayoutManager);
+//    }
 
     private void SaveCommentsToFirebase(String comment) {
         String commentKey = mDatabase.push().getKey();
@@ -433,7 +432,7 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
         });
     }
 
-    private void ShowComments(CommentsModelClass model, CommentsViewHolder holder) {
+    private void ShowComments(PostComment model, CommentsViewHolder holder) {
 
         holder.Cast_Comment_Text.setText(model.getComment());
 
@@ -487,14 +486,14 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
 
     //    RecyclerView Handling
     private void RecyclerViewHandling() {
-        commentsAdapter = new CommentsAdapter(getActivity(), commentsList);
+        postComments = new PostComments(getActivity(), commentsList);
 
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         linearLayoutManager.setStackFromEnd(true);
         Cast_RecyclerView.setLayoutManager(linearLayoutManager);
-        Cast_RecyclerView.setAdapter(commentsAdapter);
+        Cast_RecyclerView.setAdapter(postComments);
     }
 
 
@@ -506,9 +505,9 @@ public class FullScreenBottomSheet extends BottomSheetDialogFragment implements 
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        CommentsModelClass messagesModelClass = dataSnapshot.getValue(CommentsModelClass.class);
+                        PostComment messagesModelClass = dataSnapshot.getValue(PostComment.class);
                         commentsList.add(messagesModelClass);
-                        commentsAdapter.notifyDataSetChanged();
+                        postComments.notifyDataSetChanged();
 
 
                         Cast_RecyclerView.smoothScrollToPosition(commentsList.size());

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightGrey"
-    tools:context=".Fragments.BookingFragment">
+    tools:context=".Fragments.Booking">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,7 +27,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:paddingStart="25dp"
+                    android:paddingRight="25dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -39,23 +41,26 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_margin="5dp"
                             android:elevation="3dp"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/Cricket_Img"
-                                android:layout_width="140dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
-                                android:src="@raw/cricket_view" />
+                                android:maxWidth="150dp"
+                                android:maxHeight="120dp"
+                                android:minWidth="110dp"
+                                android:minHeight="80dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Cricket"
+                                android:text="@string/cricket"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="20sp" />
+                                android:textSize="17sp" />
 
                             <Button
                                 android:id="@+id/Cricket_View"
@@ -75,7 +80,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorLightGrey"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:paddingStart="25dp"
+                    android:paddingRight="25dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -86,23 +93,26 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
                             android:elevation="0dp"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/Football_Img"
-                                android:layout_width="140dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
-                                android:src="@raw/football_view" />
+                                android:maxWidth="150dp"
+                                android:maxHeight="120dp"
+                                android:minWidth="110dp"
+                                android:minHeight="80dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Football"
+                                android:text="@string/football"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="20sp" />
+                                android:textSize="17sp" />
 
                             <Button
                                 android:id="@+id/Football_View"
@@ -129,7 +139,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:paddingStart="25dp"
+                    android:paddingRight="25dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -141,23 +153,26 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:elevation="1dp"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_margin="5dp"
+                            android:elevation="0dp"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/Tennis_Img"
-                                android:layout_width="140dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
-                                android:src="@raw/tennis_view" />
+                                android:maxWidth="150dp"
+                                android:maxHeight="120dp"
+                                android:minWidth="110dp"
+                                android:minHeight="80dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Tennis"
+                                android:text="@string/tennis"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="20sp" />
+                                android:textSize="17sp" />
 
                             <Button
                                 android:id="@+id/Tennis_View"
@@ -177,7 +192,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorLightGrey"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:paddingStart="25dp"
+                    android:paddingRight="25dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -188,23 +205,26 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:elevation="2dp"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_margin="5dp"
+                            android:elevation="0dp"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/TableTennis_Img"
-                                android:layout_width="140dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
-                                android:src="@raw/table_tennis_view" />
+                                android:maxWidth="150dp"
+                                android:maxHeight="120dp"
+                                android:minWidth="110dp"
+                                android:minHeight="80dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Table Tennis"
+                                android:text="@string/table_tennis"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="20sp" />
+                                android:textSize="17sp" />
 
                             <Button
                                 android:id="@+id/TableTennis_View"
@@ -230,7 +250,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:paddingStart="25dp"
+                    android:paddingRight="25dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -242,23 +264,26 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:elevation="3dp"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_margin="5dp"
+                            android:elevation="0dp"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/Badminton_Img"
-                                android:layout_width="140dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
-                                android:src="@raw/badminton_view" />
+                                android:maxWidth="150dp"
+                                android:maxHeight="120dp"
+                                android:minWidth="110dp"
+                                android:minHeight="80dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Badminton"
+                                android:text="@string/badminton"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="20sp" />
+                                android:textSize="17sp" />
 
                             <Button
                                 android:id="@+id/Badminton_View"
@@ -278,7 +303,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorLightGrey"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:paddingStart="25dp"
+                    android:paddingRight="25dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -289,23 +316,26 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_margin="5dp"
+                            android:elevation="0dp"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/Squash_Img"
-                                android:layout_width="140dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="110dp"
-                                android:src="@raw/squash_view" />
+                                android:maxWidth="150dp"
+                                android:maxHeight="120dp"
+                                android:minWidth="110dp"
+                                android:minHeight="80dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Squash"
+                                android:text="@string/squash"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="20sp" />
+                                android:textSize="17sp" />
 
                             <Button
                                 android:id="@+id/Squash_View"

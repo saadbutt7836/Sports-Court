@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SuggestionFragment extends Fragment implements View.OnClickListener {
+public class Suggestion extends Fragment implements View.OnClickListener {
 
     private EditText Cast_Suggest;
     private Button Cast_Send_Btn;
